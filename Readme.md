@@ -1,9 +1,9 @@
-#flask-poultry-farm-server
+# flask-poultry-farm-server
 
-#Installation 
+# Installation 
 Run python setup.py install
 
-#Packages used
-flask
-flask_sqlalchemy
-flask_marshmallow
+# Packages used
+flask,
+flask_sqlalchemy,
+flask_marshmallow,
