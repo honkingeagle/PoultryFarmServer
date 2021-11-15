@@ -1,7 +1,8 @@
 # flask-poultry-farm-api
 
 # Installation 
-Run python setup.py install
+Create a virtual environment.
+Run python setup.py install.
 
 # Packages used
 flask,
