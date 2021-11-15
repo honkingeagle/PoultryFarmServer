@@ -1,4 +1,4 @@
-# flask-poultry-farm-server
+# flask-poultry-farm-api
 
 # Installation 
 Run python setup.py install
