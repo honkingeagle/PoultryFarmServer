@@ -4,6 +4,6 @@
 Run python setup.py install
 
 # Packages used
-flask
-flask_sqlalchemy
+flask,
+flask_sqlalchemy,
 flask_marshmallow
