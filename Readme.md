@@ -8,7 +8,7 @@ To create a virtual environment install virtualenv
 pip install virtualenv
 
 Create the virtual env by running    
-python -m venv env  where venv is the name of the package.(name it however you wish)
+python -m venv env  or virtualenv (env_name)
 
 Activate the python envrironment
 .\env\Scripts\activate
