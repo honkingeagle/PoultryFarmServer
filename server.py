@@ -196,7 +196,7 @@ def chickenData(farmid):
 def chickenSales(farmid):
     if request.method == 'POST':
         farm = Farm.query.get(farmid)
-        farm.chicken_sales.append(ChickenSales(broilers=request.json['broilers'], layers=request.json['layers'], 
+        farm.chicken_sales.append(ChickenSales(chicken_type=request.json['chicken_type'], 
         sales_to=request.json['sales_to'], chicken_sold=request.json['chicken_sold'],
         price_per_chicken=request.json['price_per_chicken'], medium_of_sale=request.json['medium_of_sale']
         ))
