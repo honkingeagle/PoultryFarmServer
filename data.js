@@ -71,8 +71,8 @@ const axios = require('axios')
 // })
 
 // axios.post('http://127.0.0.1:5000/dashboard/farm/chickensales/1', {
-//     broilers: 30,
-//     layers: 20,
+//     
+//     chicken_type: 'broilers',
 //     sales_to: 'mamaa',
 //     chicken_sold: 50,
 //     price_per_chicken: 1400,
