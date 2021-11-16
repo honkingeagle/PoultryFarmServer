@@ -178,7 +178,7 @@ def getFarms(userid):
 def chickenData(farmid):
     if request.method == 'POST':
         farm = Farm.query.get(farmid)
-        farm.chicken_data.append(ChickenData(broilers=request.json['broilers'], layers=request.json['layers'], 
+        farm.chicken_data.append(ChickenData(chicken_type=request.json['chicken_type'], 
         no_of_chicken_purchased=request.json['number']))
         db.session.commit()
         inputdata = ChickenData.query.filter_by(farm_id=farmid).all()
