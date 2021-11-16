@@ -36,6 +36,7 @@ class Farm(db.Model):
 class ChickenData(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     farm_id = db.Column(db.Integer, db.ForeignKey("farm.id"))
+    price = db.Column(db.Integer)
     chicken_type = db.Column(db.String)
     date_purchased = db.Column(db.DateTime, default=datetime.utcnow)
     no_of_chicken_purchased = db.Column(db.Integer)
