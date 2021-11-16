@@ -1,5 +1,5 @@
 
-# flask-poultry-farm-server
+# flask-poultry-farm-server-api
 
 # Installation 
 Create a virtual environment     
