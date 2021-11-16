@@ -51,8 +51,7 @@ class DeathReports(db.Model):
 class ChickenSales(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     farm_id = db.Column(db.Integer, db.ForeignKey("farm.id"))
-    broilers = db.Column(db.Integer, default=0)
-    layers = db.Column(db.Integer, default=0)
+    chicken_type = db.Column(db.String)
     sales_to = db.Column(db.String)
     chicken_sold = db.Column(db.Integer)
     price_per_chicken = db.Column(db.Integer)
