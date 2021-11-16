@@ -47,8 +47,7 @@ const axios = require('axios')
 // })
 
 // axios.post('http://127.0.0.1:5000/dashboard/farm/chickendata/1', {
-//     broilers: 30,
-//     layers: 20,
+//     chicken_type: 'broilers',
 //     number: 50
 // }, {
 //     headers: {
