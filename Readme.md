@@ -8,7 +8,7 @@ Run pip install -e .
 
 # Installation 
 Create a virtual environment     
-Run pip install .
+Run pip install -e .
 
 
 # Packages used
