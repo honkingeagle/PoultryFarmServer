@@ -48,6 +48,7 @@ const axios = require('axios')
 
 // axios.post('http://127.0.0.1:5000/dashboard/farm/chickendata/1', {
 //     chicken_type: 'broilers',
+    //    price: 20000,
 //     number: 50
 // }, {
 //     headers: {
