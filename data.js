@@ -15,20 +15,21 @@ axios.post('http://127.0.0.1:5000/users/login', {
     console.log(error.response)
 })
 
-// axios.post('http://127.0.0.1:5000/users/signup', {
-//     email: 'lloydwarui27@gmail.com',
-//     password: 'noni'
-// }, {
-//     headers: {
-//         'Content-Type' : 'application/json'
-//     }
-// })
-// .then((response) => {
-//     console.log(response.data)
-// })
-// .catch((error) => {
-//     console.log(error.response)
-// })
+axios.post('http://127.0.0.1:5000/users/signup', {
+    email: '',
+    username: '',
+    password: ''
+}, {
+    headers: {
+        'Content-Type' : 'application/json'
+    }
+})
+.then((response) => {
+    console.log(response.data)
+})
+.catch((error) => {
+    console.log(error.response)
+})
 
 // axios.get('http://127.0.0.1:5000/dashboard/farms/1',)
 // .then((response) => {
