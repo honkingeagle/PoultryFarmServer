@@ -165,7 +165,7 @@ def postUsers():
 def login():
     exists = db.session.query(db.exists().where(User.username == request.json['username'])).scalar()
     if exists == True:
-        logged_user = User.query.filter_by(email=request.json['email'])
+        logged_user = User.query.filter_by(username=request.json['username'])
         user_schema = UserSchema(many=True)
         output = user_schema.dump(logged_user)
         return {'user': output}
