@@ -14,6 +14,7 @@ ma = Marshmallow(app)
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String, nullable=False, unique=True)
+    username = db.Column(db.String, nullable=False, unique=True)
     password = db.Column(db.String(80), nullable=False)
     farm = db.relationship("Farm", backref='user')
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
@@ -155,7 +156,7 @@ def postUsers():
     user = User(email=request.json['email'], password=request.json['password'])
     db.session.add(user)
     db.session.commit()
-    logged_user = User.query.filter_by(email=request.json['email'], password=request.json['password'])
+    logged_user = User.query.filter_by(email=request.json['email'], username=request.json['username'])
     user_schema = UserSchema(many=True)
     output = user_schema.dump(logged_user)
     return {'user': output}
