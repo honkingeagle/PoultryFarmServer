@@ -13,7 +13,7 @@ ma = Marshmallow(app)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String, nullable=False, unique=True)
+    email = db.Column(db.String, nullable=False)
     username = db.Column(db.String, nullable=False, unique=True)
     password = db.Column(db.String(80), nullable=False)
     farm = db.relationship("Farm", backref='user')
@@ -153,17 +153,17 @@ def index():
 
 @app.route('/users/signup', methods=['POST'])
 def postUsers():
-    user = User(email=request.json['email'], password=request.json['password'])
+    user = User(email=request.form['email'], username=request.form['username'],password=request.form['password'])
     db.session.add(user)
     db.session.commit()
-    logged_user = User.query.filter_by(email=request.json['email'], username=request.json['username'])
+    logged_user = User.query.filter_by(email=request.form['email'], username=request.form['username'])
     user_schema = UserSchema(many=True)
     output = user_schema.dump(logged_user)
     return {'user': output}
 
 @app.route("/users/login", methods=['POST'])
 def login():
-    exists = db.session.query(db.exists().where(User.email == request.form['email'])).scalar()
+    exists = db.session.query(db.exists().where(User.username == request.form['username'])).scalar()
     if exists == True:
         logged_user = User.query.filter_by(email=request.form['email'])
         user_schema = UserSchema(many=True)
