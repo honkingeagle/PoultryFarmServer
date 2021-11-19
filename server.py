@@ -153,19 +153,19 @@ def index():
 
 @app.route('/users/signup', methods=['POST'])
 def postUsers():
-    user = User(email=request.form['email'], username=request.form['username'],password=request.form['password'])
+    user = User(email=request.json['email'], username=request.json['username'],password=request.json['password'])
     db.session.add(user)
     db.session.commit()
-    logged_user = User.query.filter_by(email=request.form['email'], username=request.form['username'])
+    logged_user = User.query.filter_by(email=request.json['email'], username=request.json['username'])
     user_schema = UserSchema(many=True)
     output = user_schema.dump(logged_user)
     return {'user': output}
 
 @app.route("/users/login", methods=['POST'])
 def login():
-    exists = db.session.query(db.exists().where(User.username == request.form['username'])).scalar()
+    exists = db.session.query(db.exists().where(User.username == request.json['username'])).scalar()
     if exists == True:
-        logged_user = User.query.filter_by(email=request.form['email'])
+        logged_user = User.query.filter_by(email=request.json['email'])
         user_schema = UserSchema(many=True)
         output = user_schema.dump(logged_user)
         return {'user': output}
