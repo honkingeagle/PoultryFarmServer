@@ -163,7 +163,7 @@ def postUsers():
 
 @app.route("/users/login", methods=['POST'])
 def login():
-    logged_user = User.query.filter_by(email=request.json['email'], password=request.json['password'])
+    logged_user = User.query.filter_by(email=request.json['email'], username=request.json['username'])
     user_schema = UserSchema(many=True)
     output = user_schema.dump(logged_user)
     return {'user': output}
