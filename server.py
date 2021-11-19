@@ -163,10 +163,15 @@ def postUsers():
 
 @app.route("/users/login", methods=['POST'])
 def login():
-    logged_user = User.query.filter_by(email=request.json['email'], username=request.json['username'])
-    user_schema = UserSchema(many=True)
-    output = user_schema.dump(logged_user)
-    return {'user': output}
+    exists = db.session.query(db.exists().where(User.email == request.form['email'])).scalar()
+    if exists == True:
+        logged_user = User.query.filter_by(email=request.form['email'])
+        user_schema = UserSchema(many=True)
+        output = user_schema.dump(logged_user)
+        return {'user': output}
+
+    else:
+        return "Email or password is wrong"
 
 @app.route('/dashboard/farms/<userid>', methods=['GET'])
 def getFarms(userid):
