@@ -21,6 +21,10 @@ Activate the python envrironment
 ```
 Run pip install -e .
 ```
+To run the app:
+```
+python server.py
+```
 
 # Packages used
 flask,
