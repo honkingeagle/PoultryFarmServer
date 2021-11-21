@@ -11,7 +11,7 @@ pip install virtualenv
 
 Create the virtual env by running 
 ```
-python -m venv env  or virtualenv (env_name)
+python -m venv env 
 ```
 
 Activate the python envrironment
