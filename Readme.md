@@ -4,7 +4,7 @@
 # Installation 
 Create a virtual environment
 
-To create a virtual environment install virtualenv 
+To create a virtual environment first install virtualenv 
 ```
 pip install virtualenv
 ```
