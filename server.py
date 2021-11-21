@@ -16,6 +16,7 @@ ma = Marshmallow(app)
 
 
 
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String, nullable=False)
@@ -28,6 +29,7 @@ class User(db.Model):
 class Farm(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
+    phone_number = db.Column(db.String)
     location = db.Column(db.String)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     chicken_data = db.relationship("ChickenData", backref='farm')
@@ -158,25 +160,35 @@ def index():
 
 @app.route('/users/signup', methods=['POST'])
 def postUsers():
-    user = User(email=request.form.get('email'), username=request.form.get('username'),password=request.form.get('password'))
+    user = User(email=request.json['email'], username=request.json['username'],password=request.json['password'])
     db.session.add(user)
     db.session.commit()
-    logged_user = User.query.filter_by(email=request.form.get('email'), username=request.form.get('username'))
+    logged_user = User.query.filter_by(email=request.json['email'], username=request.json['username'])
     user_schema = UserSchema(many=True)
     output = user_schema.dump(logged_user)
     return {'user': output}
 
 @app.route("/users/login", methods=['POST'])
 def login():
-    exists = db.session.query(db.exists().where(User.email == request.form.get('email'))).scalar()
+    exists = db.session.query(db.exists().where(User.email == request.json['username'])).scalar()
     if exists == True:
-        logged_user = User.query.filter_by(username=request.form.get('email'))
+        logged_user = User.query.filter_by(username=request.json['username'])
         user_schema = UserSchema(many=True)
         output = user_schema.dump(logged_user)
         return {'user': output}
 
     else:
-        return "Email or password is wrong"
+        return {'user': 'No such email or password'}
+
+@app.route('/dashboard/farm', methods=['POST'])
+def postFarm():
+    farm = Farm(name=request.json['name'], phone_number=request.json['phone_number'], location=request.json['location'])
+    db.session.add(farm)
+    db.session.commit()
+    stored_farm = Farm.query.filter_by(name=request.json['name'], phone_number=request.json['phone_number'], location=request.json['location'])
+    farm_schema = FarmSchema(many=True)
+    output = farm_schema.dump(stored_farm)
+    return {'user': output}
 
 @app.route('/dashboard/farms/<userid>', methods=['GET'])
 def getFarms(userid):
@@ -189,8 +201,8 @@ def getFarms(userid):
 def chickenData(farmid):
     if request.method == 'POST':
         farm = Farm.query.get(farmid)
-        farm.chicken_data.append(ChickenData(chicken_type=request.form.get('chicken_type'), 
-        no_of_chicken_purchased=request.form.get('number'), price=request.form.get('price')))
+        farm.chicken_data.append(ChickenData(chicken_type=request.json['chicken_type'], 
+        no_of_chicken_purchased=request.json['number'], price=request.json['price']))
         db.session.commit()
         inputdata = ChickenData.query.filter_by(farm_id=farmid).all()
         data_schema = ChickenDataSchema(many=True)
@@ -207,9 +219,9 @@ def chickenData(farmid):
 def chickenSales(farmid):
     if request.method == 'POST':
         farm = Farm.query.get(farmid)
-        farm.chicken_sales.append(ChickenSales(chicken_type=request.form.get('chicken_type'), 
-        sales_to=request.form.get('sales_to'), chicken_sold=request.form.get('chicken_sold'),
-        price_per_chicken=request.form.get('price_per_chicken'), medium_of_sale=request.form.get('medium_of_sale')
+        farm.chicken_sales.append(ChickenSales(chicken_type=request.json['chicken_type'], 
+        sales_to=request.json['sales_to'], chicken_sold=request.json['chicken_sold'],
+        price_per_chicken=request.json['price_per_chicken'], medium_of_sale=request.json['medium_of_sale']
         ))
         db.session.commit()
         data = ChickenSales.query.filter_by(farm_id=farmid).all()
@@ -226,8 +238,8 @@ def chickenSales(farmid):
 def deathReports(farmid):
     if request.method == 'POST':
         farm = Farm.query.get(farmid)
-        farm.death_report.append(DeathReports(broilers=request.form.get('broilers'), 
-     layers=request.form.get('layers')))
+        farm.death_report.append(DeathReports(broilers=request.json['broilers'], 
+     layers=request.json['layers']))
         db.session.commit()
         data = DeathReports.query.filter_by(farm_id=farmid).all()
         data_schema = DeathReportSchema(many=True)
@@ -244,8 +256,8 @@ def deathReports(farmid):
 def eggData(farmid):
     if request.method == 'POST':
         farm = Farm.query.get(farmid)
-        farm.egg_data.append(EggData(egg_type=request.form.get('egg_type'), 
-     no_of_eggs_laid=request.form.get('no_of_eggs_laid')
+        farm.egg_data.append(EggData(egg_type=request.json['egg_type'], 
+     no_of_eggs_laid=request.json['no_of_eggs_laid']
         ))
         db.session.commit()
         data = EggData.query.filter_by(farm_id=farmid).all()
@@ -263,8 +275,8 @@ def eggData(farmid):
 def eggSales(farmid):
     if request.method == 'POST':
         farm = Farm.query.get(farmid)
-        farm.egg_sales.append(EggSales(eggs_sold=request.form.get('eggs_sold'),
-       sales_to=request.form.get('sales_to')
+        farm.egg_sales.append(EggSales(eggs_sold=request.json['eggs_sold'],
+       sales_to=request.json['sales_to']
        ))
         db.session.commit()
         data = EggSales.query.filter_by(farm_id=farmid).all()
@@ -281,10 +293,10 @@ def eggSales(farmid):
 def feedData(farmid):
     if request.method == 'POST':
         farm = Farm.query.get(farmid)
-        farm.feeds.append(Feeds(feed_type=request.form.get('feed_type'), 
-        no_of_bags_purchased=request.form.get('bags_purchased'), 
-        price_per_bag=request.form.get('price_per_bag'),
-        medium_of_sale=request.form.get('medium_of_sale')
+        farm.feeds.append(Feeds(feed_type=request.json['feed_type'], 
+        no_of_bags_purchased=request.json['bags_purchased'], 
+        price_per_bag=request.json['price_per_bag'],
+        medium_of_sale=request.json['medium_of_sale']
         ))
         db.session.commit()
         data = Feeds.query.filter_by(farm_id=farmid).all()
@@ -301,10 +313,10 @@ def feedData(farmid):
 def vaccineData(farmid):
     if request.method == 'POST':
         farm = Farm.query.get(farmid)
-        farm.vaccines.append(Vaccines(vaccine_name=request.form.get('name'),
-       no_of_vaccines=request.form.get('units'),
-       price_per_unit=request.form.get('price_per_unit'),
-        medium_of_sale=request.form.get('medium_of_sale')
+        farm.vaccines.append(Vaccines(vaccine_name=request.json['name'],
+       no_of_vaccines=request.json['units'],
+       price_per_unit=request.json['price_per_unit'],
+        medium_of_sale=request.json['medium_of_sale']
         ))
         db.session.commit()
         data = Vaccines.query.filter_by(farm_id=farmid).all()
@@ -321,10 +333,10 @@ def vaccineData(farmid):
 def additionalexpensesData(farmid):
     if request.method == 'POST':
         farm = Farm.query.get(farmid)
-        farm.additional_expenses.append(AdditionalExpenses(name_of_expense=request.form.get('name'),
-        brief_description=request.form.get('description'),
-        cost=request.form.get('cost'),
-        medium_of_sale=request.form.get('medium_of_sale')
+        farm.additional_expenses.append(AdditionalExpenses(name_of_expense=request.json['name'],
+        brief_description=request.json['description'],
+        cost=request.json['cost'],
+        medium_of_sale=request.json['medium_of_sale']
         ))
         db.session.commit()
         data = AdditionalExpenses.query.filter_by(farm_id=farmid).all()
@@ -337,4 +349,6 @@ def additionalexpensesData(farmid):
         output = data_schema.dump(data)
         return {'additionalexpenses' : output}
 if __name__ == "__main__":
+    db.init_app(app)
+    db.create_all()
     app.run(debug=True)
