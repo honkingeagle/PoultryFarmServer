@@ -18,8 +18,9 @@ Activate the python envrironment
 ```
 .\env\Scripts\activate
 ```
+Run setup.py to install the required dependencies(don't worry about how one runs setup.py)
 ```
-Run pip install -e .
+ pip install -e .
 ```
 To run the app:
 ```
