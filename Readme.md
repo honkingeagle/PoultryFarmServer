@@ -9,14 +9,18 @@ To create a virtual environment install virtualenv
 pip install virtualenv
 ```
 
-Create the virtual env by running    
+Create the virtual env by running 
+```
 python -m venv env  or virtualenv (env_name)
+```
 
 Activate the python envrironment
+```
 .\env\Scripts\activate
-
+```
+```
 Run pip install -e .
-
+```
 
 # Packages used
 flask,
